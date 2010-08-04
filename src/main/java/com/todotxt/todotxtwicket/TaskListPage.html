@@ -1,0 +1,21 @@
+<html>
+<span wicket:id="navigator">[dataview navigator]</span>
+<table cellspacing="0" class="dataview">
+    <tr>
+        <th wicket:id="orderByPrio">Prio</th>
+        <th wicket:id="orderByText">Text</th>
+        <th>Edit</th>
+    </tr>
+    <tr wicket:id="sorting">
+        <td><span wicket:id="prio">[prio]</span></td>
+        <td><span wicket:id="text">[text]</span></td>
+        <td><a href="#" wicket:id="edit">edit</a></td>
+    </tr>
+</table>
+<form wicket:id="add" >
+  <input type="submit" value="Add task" />
+</form>
+<form wicket:id="sync" >
+  <input type="submit" value="Sync" />
+</form>
+</html>
