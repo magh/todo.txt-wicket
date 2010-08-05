@@ -4,3 +4,12 @@ Search or pressing a prio, proj or context creates a bread crumb track. With a c
 Select todo.txt file, e.g. todo0/todo.txt, todo1/todo.txt...
 Improve GUI design and layout. Border, table with visible cells.
 (A) Bug: Add/Update does not display change on save.
+Exclude search field.
+Auto complete search field input.
+Clear search field when clearing search filters.
+Logout should go to login screen. setResponsePage TodoListPage?
+Prio sort should be default.
+Display logged in username, e.g. Sign out USERNAME.
+One filter string, e.g. f1 f2 f3 f4.
+Project and context dropdown for filtering.
+Show current date.

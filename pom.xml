@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>todo.txt-wicket</groupId>
 	<artifactId>todo.txt-wicket</artifactId>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>todo.txt-wicket</name>
 	<url>http://maven.apache.org</url>
@@ -100,11 +100,13 @@
 			<artifactId>wicket-datetime</artifactId>
 			<version>${wicket.version}</version>
 		</dependency>
+-->
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
 			<artifactId>jetty</artifactId>
 			<version>${jetty.version}</version>
 		</dependency>
+<!--
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
 			<artifactId>jetty-util</artifactId>
