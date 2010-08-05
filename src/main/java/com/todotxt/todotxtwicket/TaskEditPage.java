@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.SubmitLink;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -30,9 +29,6 @@ public class TaskEditPage extends WebPage {
 
 	public TaskEditPage(IModel<Task> model){
 		
-		Form form = new Form("form");
-		add(form);
-		
 		final Task backup = model != null ? model.getObject() : null;
 		final String format;
 		if(backup != null){
@@ -41,11 +37,10 @@ public class TaskEditPage extends WebPage {
 			format = "";
 		}
 		final IModel<String> textModel = new Model<String>(format);
-		form.add(new TextArea<String>("text", textModel));
 
-		SubmitLink update = new SubmitLink("update"){
+		Form update = new Form("update"){
 			@Override
-			public void onSubmit() {
+			protected void onSubmit() {
 				TodotxtSession session = (TodotxtSession) getSession();
 				DropboxClient client = session.getDropboxClient();
 				List<Task> tasks = null;
@@ -65,16 +60,17 @@ public class TaskEditPage extends WebPage {
 				}
 			}
 		};
-		form.add(update);
-		
-		form.add(new SubmitLink("back"){
+		add(update);
+		update.add(new TextArea<String>("text", textModel));
+		update.add(new FeedbackLabel("feedback", update));
+
+		Form back = new Form("back"){
 			@Override
-			public void onSubmit() {
+			protected void onSubmit() {
 				setResponsePage(TaskListPage.class);
 			}
-		});
-		
-		form.add(new FeedbackLabel("feedback", update));
+		};
+		add(back);
 	}
 
 }

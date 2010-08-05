@@ -1,15 +1,19 @@
 package com.todotxt.todotxtwicket;
 
+import java.util.List;
+
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,6 +64,7 @@ public class TaskListPage extends WebPage {
 
 			add(new PagingNavigator("navigator", dataView));
 			
+			//add
 			Form add = new Form("add") {
 				@Override
 				protected void onSubmit() {
@@ -67,6 +72,7 @@ public class TaskListPage extends WebPage {
 				}
 			};
 			add(add);
+			//sync
 			Form sync = new Form("sync") {
 				@Override
 				protected void onSubmit() {
@@ -75,7 +81,51 @@ public class TaskListPage extends WebPage {
 				}
 			};
 			add(sync);
+			//logout
+			Form logout = new Form("logout") {
+				@Override
+				protected void onSubmit() {
+					TodotxtSession session = (TodotxtSession) getSession();
+					session.signOut();
+				}
+			};
+			add(logout);
+
+			final Model<String> filters = new Model<String>();
+
+			//search
+			final TextField<String> search = new TextField<String>("search", new Model<String>());
+			Form searchform = new Form("searchform") {
+				@Override
+				protected void onSubmit() {
+					String filter = search.getDefaultModelObjectAsString();
+					log.debug("searchform onSubmit: "+filter);
+					TodotxtSession session = (TodotxtSession) getSession();
+					List<String> fs = session.getTaskProvider().addFilter(filter);
+					StringBuilder sb = new StringBuilder();
+					for (String f : fs) {
+						sb.append(" -> ");
+						sb.append(f);
+					}
+					filters.setObject(sb.toString());
+				}
+			};
+			searchform.add(search);
+			add(searchform);
+			
+			Form filterform = new Form("filterform") {
+				@Override
+				protected void onSubmit() {
+					log.debug("filterform onSubmit");
+					TodotxtSession session = (TodotxtSession) getSession();
+					session.getTaskProvider().clearFilters();
+					filters.setObject("");
+				}
+			};
+			filterform.add(new Label("filters", filters));
+			add(filterform);
 		} catch (Exception e) {
+			//TODO test this; remove dropbox Todo.txt application and sync. 
 			log.info("Failed to fetch todo file!" + e.getMessage(), e);
 			session.initDropboxSupport();
 		}

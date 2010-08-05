@@ -1,0 +1,7 @@
+#/.gitignore
+.project
+.classpath
+.settings/
+/target/
+#/src/main/todo/todo.tmp
+/src/main/todo/todo.txt.bak

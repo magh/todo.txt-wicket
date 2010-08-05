@@ -22,6 +22,10 @@ public class TaskDataProvider extends SortableDataProvider<Task> {
 	private final static Logger log = LoggerFactory.getLogger(TaskDataProvider.class);
 
 	private List<Task> tasks = new ArrayList<Task>();
+	
+	private List<Task> filteredTasks = new ArrayList<Task>();
+	
+	private List<String> filters = new ArrayList<String>();
 
 	public TaskDataProvider() {
 		setSort("text", true);
@@ -29,6 +33,8 @@ public class TaskDataProvider extends SortableDataProvider<Task> {
 	
 	public void setTasks(List<Task> tasks){
 		this.tasks = tasks;
+		filteredTasks = tasks;
+		filter();
 	}
 
 	public Iterator<Task> iterator(int first, int count) {
@@ -49,17 +55,38 @@ public class TaskDataProvider extends SortableDataProvider<Task> {
 		if(sp.isAscending()){
 			cmp = Collections.reverseOrder(cmp);
 		}
-		Collections.sort(tasks, cmp);
-		List<Task> temp = tasks.subList(first, first+count);
+		Collections.sort(filteredTasks, cmp);
+		List<Task> temp = filteredTasks.subList(first, first+count);
 		return temp.iterator();
 	}
 
 	public int size() {
-		return tasks.size();
+		return filteredTasks.size();
 	}
 
 	public IModel<Task> model(Task object) {
 		return new Model<Task>(object);
+	}
+	
+	public List<String> addFilter(String filter){
+		filters.add(filter);
+		filter();
+		return filters;
+	}
+
+	public void clearFilters(){
+		filters.clear();
+		filteredTasks = tasks;
+	}
+	
+	private void filter(){
+		for (String fltr : filters) {
+			filteredTasks = TaskHelper.getByTextIgnoreCase(filteredTasks, fltr);
+		}
+	}
+
+	public List<String> getFilters(){
+		return filters;
 	}
 
 }
