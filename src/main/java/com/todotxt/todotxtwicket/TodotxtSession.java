@@ -42,6 +42,28 @@ public class TodotxtSession extends AuthenticatedWebSession {
 			return false;
 		}
 	}
+	
+	public boolean authenticateWithAccessToken(String accessToken,
+			String accessTokenSecret) {
+		log.debug("authenticateWithAccessToken");
+		mDropboxClient = DropboxClientHelper.newAuthenticatedClient(
+				Constants.CONSUMER_KEY, Constants.CONSUMER_SECRET,
+				accessToken, accessTokenSecret);
+		//TODO is client valid?
+		signIn(true);
+		return true;
+	}
+
+	public boolean authenticateWithAuthorizedRequestToken(String requestToken,
+			String requestTokenSecret) {
+		log.debug("authenticateWithAuthorizedRequestToken");
+		mDropboxClient = DropboxClientHelper.newClientFromCallback(
+				Constants.CONSUMER_KEY, Constants.CONSUMER_SECRET, requestToken,
+				requestTokenSecret);
+		//TODO is client valid?
+		signIn(true);
+		return true;
+	}
 
 	@Override
 	public Roles getRoles() {
