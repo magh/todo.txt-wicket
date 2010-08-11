@@ -1,4 +1,9 @@
-<html>
+<wicket:extend>
+<form wicket:id="searchform" >
+  <input wicket:id="search" type="text" />
+  <input type="submit" value="Search" />
+  <span wicket:id="filter">[filter]</span>
+</form>
 <span wicket:id="navigator">[dataview navigator]</span>
 <table cellspacing="0" class="dataview">
     <tr>
@@ -12,21 +17,6 @@
         <td><a href="#" wicket:id="edit">edit</a></td>
     </tr>
 </table>
-<form wicket:id="add" >
-  <input type="submit" value="Add task" />
-</form>
-<form wicket:id="sync" >
-  <input type="submit" value="Sync" />
-</form>
-<form wicket:id="logout" >
-  <input type="submit" value="Logout" />
-</form>
-<form wicket:id="searchform" >
-  <input wicket:id="search" type="text" />
-  <input type="submit" value="Search" />
-</form>
-<form wicket:id="filterform" >
-  <span wicket:id="filters">[filters]</span>
-  <input type="submit" value="Clear" />
-</form>
-</html>
+<a wicket:id="add">[Add]</a>
+<a wicket:id="sync">[Refresh]</a>
+</wicket:extend>

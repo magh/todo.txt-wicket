@@ -3,9 +3,10 @@ package com.todotxt.todotxtwicket;
 import java.util.List;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.SubmitLink;
 import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.slf4j.Logger;
@@ -19,7 +20,7 @@ import com.todotxt.todotxtwicket.common.FeedbackLabel;
 
 @AuthorizeInstantiation("USER")
 @SuppressWarnings("serial")
-public class TaskEditPage extends WebPage {
+public class TaskEditPage extends TodotxtBorderPage {
 	
 	private final static Logger log = LoggerFactory.getLogger(TaskEditPage.class);
 	
@@ -50,6 +51,7 @@ public class TaskEditPage extends WebPage {
 				}else{
 					tasks = DropboxUtil.addTask(client, textModel.getObject());
 				}
+				//TODO wait until file is updated
 				if(tasks != null){
 					log.debug("Added/updated task!");
 					session.setTasks(tasks);
@@ -60,17 +62,16 @@ public class TaskEditPage extends WebPage {
 				}
 			}
 		};
-		add(update);
 		update.add(new TextArea<String>("text", textModel));
-		update.add(new FeedbackLabel("feedback", update));
-
-		Form back = new Form("back"){
+		update.add(new SubmitLink("addupdate"));
+		update.add(new Link<String>("back"){
 			@Override
-			protected void onSubmit() {
+			public void onClick() {
 				setResponsePage(TaskListPage.class);
 			}
-		};
-		add(back);
+		});
+		update.add(new FeedbackLabel("feedback", update));
+		add(update);
 	}
 
 }

@@ -68,8 +68,11 @@ public class TaskDataProvider extends SortableDataProvider<Task> {
 		return new Model<Task>(object);
 	}
 	
-	public List<String> addFilter(String filter){
-		filters.add(filter);
+	public List<String> setFilter(String[] filterArr){
+		clearFilters();
+		for (String filter : filterArr) {
+			filters.add(filter);
+		}
 		filter();
 		return filters;
 	}

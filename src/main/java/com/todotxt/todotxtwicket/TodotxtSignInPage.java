@@ -1,15 +1,11 @@
 package com.todotxt.todotxtwicket;
 
 import java.util.Map;
-import java.util.Random;
 
 import org.apache.http.NameValuePair;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RequestCycle;
-import org.apache.wicket.authentication.panel.SignInPanel;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.persistence.CookieValuePersister;
-import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
@@ -21,13 +17,9 @@ import org.slf4j.LoggerFactory;
 import com.dropbox.client.DropboxClientHelper;
 import com.todotxt.todotxtjava.Constants;
 
-public class TodotxtSignInPage extends WebPage {
+public class TodotxtSignInPage extends TodotxtBorderPage {
 	
 	private final static Logger log = LoggerFactory.getLogger(TodotxtSignInPage.class);
-
-	private final static String COOKIE_ACCESSTOKEN_KEY = "accesstokenkey";
-	
-	private final static Random rand = new Random();
 
 	public TodotxtSignInPage() {
 		this(null);
@@ -69,24 +61,7 @@ public class TodotxtSignInPage extends WebPage {
 			}
 		});
 
-		add(new SignInPanel("signInPanel") {
-			@Override
-			public boolean signIn(String username, String password) {
-				boolean res = super.signIn(username, password);
-				if(res){
-					TodotxtApplication app = (TodotxtApplication) getApplication();
-					TodotxtSession session = (TodotxtSession) getSession();
-					String key = "" + rand.nextLong();
-					String accessToken = session.getDropboxClient().getAccessToken();
-					String accessTokenSecret = session.getDropboxClient().getAccessTokenSecret();
-					app.putAccessToken(key, accessToken, accessTokenSecret);
-					cookieHandler.save(COOKIE_ACCESSTOKEN_KEY, key);
-				}
-				return res;
-			}
-		});
-
-		String key = cookieHandler.load(COOKIE_ACCESSTOKEN_KEY);
+		String key = cookieHandler.load(TodotxtSession.COOKIE_ACCESSTOKEN_KEY);
 		TodotxtApplication app = (TodotxtApplication) getApplication();
 		NameValuePair accessToken = app.getAccessToken(key);
 		log.debug("Found access token: " + (accessToken != null));

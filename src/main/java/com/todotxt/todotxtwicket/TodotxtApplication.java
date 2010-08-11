@@ -32,6 +32,10 @@ public class TodotxtApplication extends AuthenticatedWebApplication {
 				accessTokenSecret));
 	}
 
+	public void removeAccessToken(String key){
+		mAccessTokens.remove(key);
+	}
+
 	/**
 	 * Removes entry
 	 * @param key

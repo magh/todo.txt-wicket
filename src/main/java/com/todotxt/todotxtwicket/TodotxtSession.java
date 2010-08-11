@@ -1,11 +1,14 @@
 package com.todotxt.todotxtwicket;
 
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.wicket.Request;
 import org.apache.wicket.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authorization.strategies.role.Roles;
+import org.apache.wicket.markup.html.form.persistence.CookieValuePersister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,9 +24,15 @@ public class TodotxtSession extends AuthenticatedWebSession {
 
 	private static final Logger log = LoggerFactory.getLogger(TodotxtSession.class);
 
+	public final static String COOKIE_ACCESSTOKEN_KEY = "accesstokenkey";
+
 	private DropboxClient mDropboxClient;
 	
 	private TaskDataProvider mTaskProvider = new TaskDataProvider();
+	
+	private String mAccessTokenKey;
+
+	private final static Random rand = new Random();
 
 	public TodotxtSession(Request request) {
 		super(request);
@@ -36,6 +45,7 @@ public class TodotxtSession extends AuthenticatedWebSession {
 			mDropboxClient = DropboxClientHelper.newClient(
 					Constants.CONSUMER_KEY, Constants.CONSUMER_SECRET,
 					username, password);
+			saveAccessToken();
 			return true;
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
@@ -51,6 +61,7 @@ public class TodotxtSession extends AuthenticatedWebSession {
 				accessToken, accessTokenSecret);
 		//TODO is client valid?
 		signIn(true);
+		saveAccessToken();
 		return true;
 	}
 
@@ -62,7 +73,25 @@ public class TodotxtSession extends AuthenticatedWebSession {
 				requestTokenSecret);
 		//TODO is client valid?
 		signIn(true);
+		saveAccessToken();
 		return true;
+	}
+	
+	private void saveAccessToken(){
+		mAccessTokenKey = "" + rand.nextLong();
+		String accessToken = mDropboxClient.getAccessToken();
+		String accessTokenSecret = mDropboxClient.getAccessTokenSecret();
+		TodotxtApplication app = (TodotxtApplication) getApplication();
+		app.putAccessToken(mAccessTokenKey, accessToken, accessTokenSecret);
+		CookieValuePersister cookieHandler = new CookieValuePersister();
+		cookieHandler.save(COOKIE_ACCESSTOKEN_KEY, mAccessTokenKey);
+	}
+	
+	@Override
+	public void signOut() {
+		TodotxtApplication app = (TodotxtApplication) getApplication();
+		app.removeAccessToken(mAccessTokenKey);
+		super.signOut();
 	}
 
 	@Override
@@ -91,15 +120,17 @@ public class TodotxtSession extends AuthenticatedWebSession {
 			mTaskProvider.setTasks(tasks);
 			log.info("fetched tasks: " + tasks.size());
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			log.error(e.getMessage());
+			initDropboxSupport();
 		}
 	}
 
-	public boolean initDropboxSupport(){
+	private boolean initDropboxSupport(){
 		log.info("Initializing dropbox support!");
 		try {
 			DropboxClientHelper.putFile(mDropboxClient, "/", "todo.txt",
 					new ByteArrayInputStream(new byte[0]), 0);
+			mTaskProvider.setTasks(new ArrayList<Task>());
 			return true;
 		} catch (DropboxException e1) {
 			log.error(e1.getMessage(), e1);

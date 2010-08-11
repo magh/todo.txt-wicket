@@ -1,10 +1,10 @@
-<html>
+<wicket:extend>
  <form wicket:id="update">
   <p><textarea wicket:id="text" rows="6" cols="100"></textarea></p>
-  <p><input type="submit" value="Add/Update" /></p>
+  <p>
+   <a wicket:id="addupdate" >[Add/Update]</a>
+   <a wicket:id="back" >[Back]</a>
+  </p>
   <p><span wicket:id="feedback">[Feedback messages]</span></p>
  </form>
- <form wicket:id="back">
-  <p><input type="submit" value="Back" /></p>
- </form>
-</html>
+</wicket:extend>
