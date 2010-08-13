@@ -26,6 +26,7 @@ public class TodotxtSignInPage extends TodotxtBorderPage {
 	}
 
 	public TodotxtSignInPage(final PageParameters params){
+		super(params);
 		log.debug("TodotxtSignInPage<init>");
 		final CookieValuePersister cookieHandler = new CookieValuePersister();
 

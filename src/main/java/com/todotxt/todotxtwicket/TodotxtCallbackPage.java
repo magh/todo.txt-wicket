@@ -9,11 +9,11 @@ public class TodotxtCallbackPage extends TodotxtBorderPage {
 	private final static Logger log = LoggerFactory.getLogger(TodotxtCallbackPage.class);
 
 	public TodotxtCallbackPage() {
-		super();
-		log.debug("<init>");
+		this(null);
 	}
 
 	public TodotxtCallbackPage(PageParameters parameters) {
+		super(parameters);
 		//e.g. parameters=uid = "[6546379]" oauth_token = "[mkoouaa7onxreji]"
 		log.debug("<init> parameters="+parameters);
 		String token = parameters.getString("oauth_token");

@@ -1,22 +1,4 @@
 <wicket:extend>
-<form wicket:id="searchform" >
-  <input wicket:id="search" type="text" />
-  <input type="submit" value="Search" />
-  <span wicket:id="filter">[filter]</span>
-</form>
-<span wicket:id="navigator">[dataview navigator]</span>
-<table cellspacing="0" class="dataview">
-    <tr>
-        <th wicket:id="orderByPrio">Prio</th>
-        <th wicket:id="orderByText">Text</th>
-        <th>Edit</th>
-    </tr>
-    <tr wicket:id="sorting">
-        <td><span wicket:id="prio">[prio]</span></td>
-        <td><span wicket:id="text">[text]</span></td>
-        <td><a href="#" wicket:id="edit">edit</a></td>
-    </tr>
-</table>
-<a wicket:id="add">[Add]</a>
-<a wicket:id="sync">[Refresh]</a>
+<span wicket:id="tasklistpanel">[task list panel]</span>
+<span wicket:id="taskeditpanel">[task edit panel]</span>
 </wicket:extend>

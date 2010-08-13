@@ -7,6 +7,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.SubmitLink;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.slf4j.Logger;
@@ -20,16 +21,13 @@ import com.todotxt.todotxtwicket.common.FeedbackLabel;
 
 @AuthorizeInstantiation("USER")
 @SuppressWarnings("serial")
-public class TaskEditPage extends TodotxtBorderPage {
+public class TaskEditPanel extends Panel {
 	
-	private final static Logger log = LoggerFactory.getLogger(TaskEditPage.class);
-	
-	public TaskEditPage() {
-		this(null);
-	}
+	private final static Logger log = LoggerFactory.getLogger(TaskEditPanel.class);
 
-	public TaskEditPage(IModel<Task> model){
-		
+	public TaskEditPanel(String id, IModel<Task> model) {
+		super(id, model);
+
 		final Task backup = model != null ? model.getObject() : null;
 		final String format;
 		if(backup != null){
