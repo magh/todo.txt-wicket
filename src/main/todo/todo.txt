@@ -13,3 +13,8 @@ Display logged in username, e.g. Sign out USERNAME.
 One filter string, e.g. f1 f2 f3 f4.
 Project and context dropdown for filtering.
 Show current date.
+(A) Just one line row add task text field?
+(A) Use oauth authentication. I.e. redirect to dropbox login page.
+(A) Add add/input field under list.
+(A) Clear search link to right of search filters, e.g. (clear).
+(A) Done action to right of list item with confirmation dialog. action dropdown?
